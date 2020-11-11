@@ -7,12 +7,12 @@ class Planilha
         book = Spreadsheet::Workbook.new
     
         sheet1 = book.create_worksheet
-        sheet1.row(0).concat %w{Descrição Url Valor Cashback}
+        sheet1.row(0).push 'Descrição', 'Url', 'Valor à vista', 'Valor a prazo', 'Cashback'
 
         posicao = 1
 
         $produtos.each do |p|
-            sheet1.row(posicao).push p.descricao, p.url, p.valor, p.cashback
+            sheet1.row(posicao).push p.descricao, p.url, p.avista, p.aprazo, p.cashback
             posicao += 1
         end
 

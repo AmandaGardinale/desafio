@@ -34,16 +34,22 @@ Então('irei buscar os dados do produto {string}') do |busca_produto|
     $cashback = page.first('span', :text => ' de volta').text
     $url = URI.parse(current_url).to_s
 
-    $valor = ""
+    $avista = ""
+    $aprazo = ""
 
     if(page.has_text?('no boleto')) 
-        $valor = page.first(:xpath, "//div[@class='src__BestPrice-lo2vta-5 bFIChl priceSales']").text
+        $valor_vista = page.first(:xpath, "//div[@class='src__BestPrice-lo2vta-5 bFIChl priceSales']").text
+        find(:xpath, "//a[@href='#modal-payment-methods']").click
+        $busca_a_prazo = page.first('td', :text => 'total R$ ').text
+        $avista = ($valor_vista)
+        $aprazo = ($busca_a_prazo)
     else
         $valor_prazo = page.first(:xpath, "//div[@class='src__BestPrice-lo2vta-5 bFIChl priceSales']").text
-        $valor = ('Não há opção de pagamento à vista para este produto. Segue o Valor a Prazo: ' + $valor_prazo)
+        $avista = ('Não há opção de pagamento à vista para este produto.') 
+        $aprazo = ($valor_prazo)
     end
 
-    $produto = Produto.new($descricao, $url, $valor, $cashback)
+    $produto = Produto.new($descricao, $url, $avista, $aprazo, $cashback)
 
 end
 
